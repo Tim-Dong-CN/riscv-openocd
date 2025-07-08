@@ -1,0 +1,25 @@
+name: Sync to Target Repository
+
+on:
+  push:
+    branches: [ main ]  # 可根据需求修改分支名称
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Push to target repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.SOURCE_REPO_TOKEN }}
+        with:
+          source-directory: '.'  # 要同步的目录，默认为整个仓库
+          destination-github-username: 'Tim-Dong-CN'  # 目标仓库用户名
+          destination-repository-name: 'riscv-openocd'  # 目标仓库名称
+          user-email: xupt@linux.do  # 同步提交的邮箱
+          target-branch: main  # 目标仓库的分支
